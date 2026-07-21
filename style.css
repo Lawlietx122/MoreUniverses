@@ -1,0 +1,766 @@
+/* Море Вселенных — Styles */
+/* Tokens: синий акцент во всех темах, меняется только нейтральная база.
+   Tokens are scoped to the extension overlay only (never on body) to avoid
+   clashes with SillyTavern's own theme. Fallbacks ensure rendering even if a
+   token is missing. */
+
+/* Spacing scale (single rhythm). */
+#sea-of-universes-modal-overlay,
+#au-welcome-overlay,
+#au-generation-loading {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+}
+
+/* Dark (default) — applied to the overlay root. */
+#sea-of-universes-modal-overlay[data-theme="dark"],
+#sea-of-universes-modal-overlay[data-theme="dark"] .au-universal-popup,
+#au-welcome-overlay[data-theme="dark"],
+#au-generation-loading[data-theme="dark"] {
+  --bg: #10131A;
+  --surface: #151821;
+  --border: rgba(255, 255, 255, 0.10);
+  --text-primary: #F2F4F8;
+  --text-secondary: #A3A9B6;
+  --text-muted: #6F7684;
+  --accent: #6D9EFF;
+  --accent-hover: #82ACFF;
+  --success: #72BC8F;
+  --danger: #E97366;
+}
+
+#sea-of-universes-modal-overlay[data-theme="gray"],
+#sea-of-universes-modal-overlay[data-theme="gray"] .au-universal-popup,
+#au-welcome-overlay[data-theme="gray"],
+#au-generation-loading[data-theme="gray"] {
+  --bg: #222429;
+  --surface: #292B30;
+  --border: rgba(255, 255, 255, 0.14);
+  --text-primary: #F1F1F1;
+  --text-secondary: #B4B6BC;
+  --text-muted: #8F9299;
+  --accent: #7BA5DC;
+  --accent-hover: #8EB3E3;
+  --success: #72BC8F;
+  --danger: #E97366;
+}
+
+#sea-of-universes-modal-overlay[data-theme="light"],
+#sea-of-universes-modal-overlay[data-theme="light"] .au-universal-popup,
+#au-welcome-overlay[data-theme="light"],
+#au-generation-loading[data-theme="light"] {
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --border: rgba(18, 24, 38, 0.14);
+  --text-primary: #20232A;
+  --text-secondary: #606774;
+  --text-muted: #858C98;
+  --accent: #2783DE;
+  --accent-hover: #1F70BD;
+  --success: #46A171;
+  --danger: #E56458;
+}
+
+/* Fallback (no data-theme yet) — mirrors dark so the first paint is correct. */
+#sea-of-universes-modal-overlay,
+.au-universal-popup,
+#au-welcome-overlay,
+#au-generation-loading {
+  --bg: #10131A;
+  --surface: #151821;
+  --border: rgba(255, 255, 255, 0.10);
+  --text-primary: #F2F4F8;
+  --text-secondary: #A3A9B6;
+  --text-muted: #6F7684;
+  --accent: #6D9EFF;
+  --accent-hover: #82ACFF;
+  --success: #72BC8F;
+  --danger: #E97366;
+}
+
+/* ===== Universal helpers ===== */
+.field-hint { font-size: 12px; color: var(--text-muted, #5B5E66); line-height: 1.4; display: block; margin-top: var(--space-1); }
+.sou-muted-line { font-size: 12px; color: var(--text-muted, #5B5E66); }
+.sou-field { display: flex; flex-direction: column; gap: var(--space-1); }
+.sou-divider { border-top: 1px solid var(--border, #2A2D36); }
+
+/* ===== Universal Popup (works on all screen sizes) ===== */
+/* NOTE: The overlay uses INLINE STYLES in JS for bulletproof positioning */
+/* These styles are for the popup CONTENT only */
+
+.au-universal-popup {
+  position: relative !important;
+  width: 90vw !important;
+  max-width: 620px !important;
+  max-height: 80vh !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.5),
+    0 20px 60px rgba(0, 0, 0, 0.8) !important;
+  animation: au-popupEntrance 0.4s ease-out !important;
+}
+
+/* When the modal carries an adapted tag, push the entire header row DOWN so the
+   title and theme badge stay left-aligned. The ribbon sits above them in the
+   corner, separated by extra top padding equal to the ribbon's height + a gap. */
+.au-universal-popup--adapted .au-universal-popup-header {
+  padding-top: 36px !important;
+}
+
+.au-universal-popup-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 16px 20px !important;
+  border-bottom: 0.5px solid var(--border) !important;
+  background: transparent !important;
+  flex-shrink: 0 !important;
+}
+
+.au-card-front-header-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.au-modal-title {
+  font-size: 1.1em !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+.au-modal-theme-badge {
+  font-size: 0.75em !important;
+  color: var(--text-secondary) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.au-modal-close {
+  cursor: pointer !important;
+  font-size: 1.3em !important;
+  color: var(--text-secondary) !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.2s !important;
+  padding: 4px 8px !important;
+  border-radius: 8px !important;
+}
+
+.au-modal-close:hover {
+  opacity: 1 !important;
+  background: var(--border) !important;
+}
+
+.au-universal-popup-body {
+  padding: 20px 24px !important;
+  overflow-y: auto !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: transparent !important;
+}
+
+.au-story-text {
+  font-size: 0.95em !important;
+  line-height: 1.75 !important;
+  color: var(--text-primary) !important;
+  white-space: pre-wrap !important;
+}
+
+.au-result-section {
+  margin-bottom: 18px !important;
+  padding: 14px !important;
+  border: 0.5px solid var(--border) !important;
+  border-radius: 12px !important;
+  background: var(--bg) !important;
+}
+
+.au-result-section:last-child {
+  margin-bottom: 0 !important;
+}
+
+.au-result-section-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 0.5px solid var(--border) !important;
+}
+
+.au-result-section-title {
+  color: var(--text-primary) !important;
+  font-size: 0.98em !important;
+  font-weight: 700 !important;
+}
+
+.au-result-section-hint {
+  margin-top: 3px !important;
+  color: rgba(163, 184, 204, 0.72) !important;
+  font-size: 0.72em !important;
+  line-height: 1.4 !important;
+}
+
+.au-card-preview-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.au-card-preview-field {
+  overflow: hidden !important;
+  border: 1px solid rgba(130, 160, 220, 0.16) !important;
+  border-radius: 9px !important;
+  background: rgba(6, 9, 18, 0.26) !important;
+}
+
+.au-card-preview-field summary {
+  cursor: pointer !important;
+  padding: 9px 11px !important;
+  color: #dbe7f3 !important;
+  font-size: 0.84em !important;
+  font-weight: 650 !important;
+  user-select: none !important;
+}
+
+.au-card-preview-field[open] summary {
+  border-bottom: 1px solid rgba(130, 160, 220, 0.13) !important;
+  background: rgba(130, 160, 220, 0.055) !important;
+}
+
+.au-card-preview-value {
+  max-height: 320px !important;
+  overflow-y: auto !important;
+  padding: 11px 12px !important;
+  color: #dfe8f2 !important;
+  font-size: 0.86em !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.au-preview-empty {
+  color: rgba(163, 184, 204, 0.58) !important;
+  font-style: italic !important;
+}
+
+.au-universal-popup-footer {
+  display: flex !important;
+  gap: 10px !important;
+  padding: 14px 20px !important;
+  border-top: 1px solid rgba(130, 160, 220, 0.2) !important;
+  justify-content: flex-end !important;
+  flex-shrink: 0 !important;
+  background: transparent !important;
+}
+
+/* ===== Gallery Items ===== */
+.au-gallery-list {
+  padding: 12px 16px !important;
+}
+
+.au-gallery-item {
+  position: relative !important;
+  padding: 12px 14px !important;
+  margin-bottom: 8px !important;
+  background: rgba(130, 160, 220, 0.05) !important;
+  border: 1px solid rgba(130, 160, 220, 0.15) !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  overflow: hidden !important;
+}
+
+.au-gallery-item:hover {
+  background: rgba(130, 160, 220, 0.1) !important;
+  border-color: rgba(130, 160, 220, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.au-gallery-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.au-gallery-item-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 4px !important;
+}
+
+.au-gallery-item-char {
+  font-weight: 600 !important;
+  font-size: 0.9em !important;
+  color: #e2e8f0 !important;
+}
+
+.au-gallery-item-time {
+  font-size: 0.7em !important;
+  color: rgba(163, 184, 204, 0.6) !important;
+}
+
+.au-gallery-item-badge {
+  font-size: 0.7em !important;
+  color: rgba(163, 184, 204, 0.8) !important;
+  margin-bottom: 6px !important;
+}
+
+/* "Character Adapted" indicator — styled as a post-it tag pinned to the top-left
+   corner of the card. Used in BOTH the gallery list item and the story modal
+   header so the visual cue is consistent everywhere.
+   The element should be a child of the parent card with `position: relative`. */
+.au-adapted-tag {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 5 !important;
+  display: inline-block !important;
+  padding: 3px 10px 3px 8px !important;
+  font-size: 0.65em !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #d63a3a 0%, #b81e1e 100%) !important;
+  border-bottom-right-radius: 8px !important;
+  border-top-left-radius: 10px !important;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
+  pointer-events: auto !important;
+  cursor: default !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+}
+
+/* Compact variant — used on the gallery list where vertical space is tight.
+   Shows just an emoji marker. */
+.au-adapted-tag.au-adapted-tag--compact {
+  padding: 2px 7px 2px 6px !important;
+  font-size: 0.85em !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Pad the gallery item header so its content does not slide under the corner tag. */
+.au-gallery-item.au-gallery-item--adapted .au-gallery-item-header {
+  padding-left: 28px !important;
+}
+
+.au-gallery-item-preview {
+  font-size: 0.8em !important;
+  line-height: 1.5 !important;
+  color: rgba(226, 232, 240, 0.8) !important;
+  opacity: 0.7 !important;
+}
+
+/* ===== Quick Settings Popup / creation wizard ===== */
+#sea-of-universes-modal-overlay .au-quick-popup {
+  width: min(720px, calc(100vw - 32px)) !important;
+  max-width: 720px !important;
+  max-height: calc(100vh - 32px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#sea-of-universes-modal-overlay .au-quick-body {
+  padding: var(--space-5) var(--space-6) !important;
+  overflow-y: auto !important;
+  min-height: 0 !important;
+}
+
+#sea-of-universes-modal-overlay .au-quick-footer {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: var(--space-3) !important;
+  padding: var(--space-4) var(--space-6) !important;
+  background: var(--surface) !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+#sea-of-universes-modal-overlay .au-quick-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+#sea-of-universes-modal-overlay .au-quick-row label {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#sea-of-universes-modal-overlay .sou-inline-custom {
+  display: block;
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+#sea-of-universes-modal-overlay .sou-inline-custom > * + * {
+  margin-top: var(--space-1);
+}
+
+#sea-of-universes-modal-overlay .sou-inline-custom__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* ===== Gallery Actions ===== */
+.au-gallery-item-actions {
+  display: flex !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+
+.au-gallery-star,
+.au-gallery-delete {
+  cursor: pointer !important;
+  font-size: 0.85em !important;
+  opacity: 0.4 !important;
+  transition: all 0.2s !important;
+  padding: 2px !important;
+}
+
+.au-gallery-star:hover {
+  opacity: 1 !important;
+}
+.au-gallery-delete:hover {
+  opacity: 1 !important;
+}
+.au-gallery-star.au-star-active {
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 4px gold) !important;
+}
+
+.au-gallery-item-meta {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 6px !important;
+}
+
+/* ===== Settings Panel ===== */
+.sea-of-universes-settings hr {
+  border-color: rgba(130, 100, 255, 0.15) !important;
+  margin: 10px 0 !important;
+}
+
+.sea-of-universes-settings .au-about-card {
+  margin-top: 15px !important;
+  padding: 12px !important;
+  background: rgba(70, 95, 130, 0.16) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(150, 180, 220, 0.22) !important;
+}
+
+.au-theme-selector {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.au-theme-selector select {
+  width: 100% !important;
+}
+
+/* ===== Chat Menu Button specific styles (Optional if needed) ===== */
+.au-chat-btn-icon {
+  font-size: 1.15em !important;
+  line-height: 1 !important;
+}
+
+.au-chat-btn-loading {
+  font-size: 1.15em !important;
+  line-height: 1 !important;
+  animation: au-btnSpin 1.2s linear infinite !important;
+}
+
+.au-chat-btn-busy {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+}
+
+/* ===== Animations ===== */
+@keyframes au-popupEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes au-btnSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== Mobile adjustments ===== */
+@media screen and (max-width: 768px) {
+  .au-universal-popup {
+    width: 95vw !important;
+    max-height: 75vh !important;
+    border-radius: 14px !important;
+  }
+
+  .au-universal-popup-header {
+    padding: 12px 16px !important;
+  }
+
+  .au-modal-title {
+    font-size: 1em !important;
+  }
+
+  .au-universal-popup-body {
+    padding: 16px 18px !important;
+  }
+
+  .au-story-text {
+    font-size: 0.9em !important;
+    line-height: 1.65 !important;
+  }
+
+  .au-result-section {
+    padding: 11px !important;
+  }
+
+  .au-card-preview-value {
+    max-height: 240px !important;
+    font-size: 0.82em !important;
+  }
+
+  .au-universal-popup-footer {
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  .au-universal-popup-footer .menu_button {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .au-chat-btn-icon,
+  .au-chat-btn-loading {
+    font-size: 1.25em !important;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  #sea-of-universes-modal-overlay .au-quick-popup {
+    width: min(100vw, 720px) !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  #sea-of-universes-modal-overlay .au-quick-body {
+    padding: var(--space-4) !important;
+  }
+
+  #sea-of-universes-modal-overlay .au-quick-footer {
+    flex-direction: row !important;
+    padding: var(--space-3) var(--space-4) !important;
+  }
+
+  #sea-of-universes-modal-overlay .sou-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #sea-of-universes-modal-overlay .sou-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  #sea-of-universes-modal-overlay .sou-tab {
+    flex: 0 0 auto;
+    min-width: max-content;
+    white-space: nowrap;
+  }
+}
+
+/* ===== Pulsing red firework loader (firework-pulse) ===== */
+.sou-firework {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 8px;
+  display: block;
+}
+.sou-firework-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #e03050;
+  box-shadow: 0 0 12px 2px rgba(224, 48, 80, 0.8);
+  animation: firework-pulse 1.2s ease-out infinite;
+}
+.sou-firework .sou-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: #e03050;
+  opacity: 0;
+  animation: firework-pulse 1.2s ease-out infinite;
+}
+/* 8 rays radiating from the center */
+.sou-firework .sou-spark:nth-child(2) { transform: rotate(0deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(3) { transform: rotate(45deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(4) { transform: rotate(90deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(5) { transform: rotate(135deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(6) { transform: rotate(180deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(7) { transform: rotate(225deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(8) { transform: rotate(270deg) translateY(0); }
+.sou-firework .sou-spark:nth-child(9) { transform: rotate(315deg) translateY(0); }
+
+/* Sparks travel outward along their ray; the transform-origin trick keeps the
+   rotation applied above while we animate the outward translation. */
+.sou-firework .sou-spark {
+  transform-origin: 0 0;
+}
+.sou-firework .sou-spark:nth-child(2) { animation-name: firework-ray-0; }
+.sou-firework .sou-spark:nth-child(3) { animation-name: firework-ray-45; }
+.sou-firework .sou-spark:nth-child(4) { animation-name: firework-ray-90; }
+.sou-firework .sou-spark:nth-child(5) { animation-name: firework-ray-135; }
+.sou-firework .sou-spark:nth-child(6) { animation-name: firework-ray-180; }
+.sou-firework .sou-spark:nth-child(7) { animation-name: firework-ray-225; }
+.sou-firework .sou-spark:nth-child(8) { animation-name: firework-ray-270; }
+.sou-firework .sou-spark:nth-child(9) { animation-name: firework-ray-315; }
+
+@keyframes firework-pulse {
+  0%   { transform: scale(0.6); opacity: 0.4; }
+  40%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+/* Each ray: appear at center, bloom outward, fade — 1.2s ease-out infinite. */
+@keyframes firework-ray-0   { 0% { opacity: 0; transform: rotate(0deg)   translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(0deg)   translate(26px, 0); } }
+@keyframes firework-ray-45  { 0% { opacity: 0; transform: rotate(45deg)  translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(45deg)  translate(26px, 0); } }
+@keyframes firework-ray-90  { 0% { opacity: 0; transform: rotate(90deg)  translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(90deg)  translate(26px, 0); } }
+@keyframes firework-ray-135 { 0% { opacity: 0; transform: rotate(135deg) translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(135deg) translate(26px, 0); } }
+@keyframes firework-ray-180 { 0% { opacity: 0; transform: rotate(180deg) translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(180deg) translate(26px, 0); } }
+@keyframes firework-ray-225 { 0% { opacity: 0; transform: rotate(225deg) translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(225deg) translate(26px, 0); } }
+@keyframes firework-ray-270 { 0% { opacity: 0; transform: rotate(270deg) translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(270deg) translate(26px, 0); } }
+@keyframes firework-ray-315 { 0% { opacity: 0; transform: rotate(315deg) translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(315deg) translate(26px, 0); } }
+
+/* ===== Alternate Greetings (story modal) ===== */
+.au-alt-greetings-section {
+  background: rgba(130, 160, 220, 0.03) !important;
+}
+
+.au-alt-greeting {
+  padding: 10px 12px !important;
+  margin-bottom: 8px !important;
+  border: 1px solid rgba(130, 160, 220, 0.14) !important;
+  border-radius: 9px !important;
+  background: rgba(6, 9, 18, 0.22) !important;
+}
+
+.au-alt-greeting:last-child {
+  margin-bottom: 0 !important;
+}
+
+.au-alt-greeting-label {
+  font-size: 0.72em !important;
+  font-weight: 700 !important;
+  color: #b9c6e0 !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+/* ===== Multi-dropdown search box ===== */
+#sea-of-universes-modal-overlay .au-multi-search {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  color: var(--text-primary) !important;
+}
+
+#sea-of-universes-modal-overlay .au-multi-options {
+  max-height: none;
+  overflow: visible;
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--border);
+}
+
+/* ===== Saved items list ===== */
+#sea-of-universes-modal-overlay .au-saved-item {
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+/* ===== Progress stages (generation overlay) ===== */
+.au-stage {
+  transition: background 0.2s ease, opacity 0.2s ease !important;
+}
+
+.au-stage-active .au-stage-label {
+  color: #e0d8ff !important;
+  font-weight: 600 !important;
+}
+
+.au-stage-done .au-stage-label {
+  text-decoration: line-through !important;
+  text-decoration-color: rgba(160, 200, 160, 0.4) !important;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .au-universal-popup,
+  .au-chat-btn-loading,
+  .sou-firework-core,
+  .sou-firework .sou-spark {
+    animation: none !important;
+  }
+}
+
+
+/* Card generation modes */
+#sea-of-universes-modal-overlay .sou-mode-section{margin-bottom:var(--space-6,24px)}
+#sea-of-universes-modal-overlay .sou-mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3,12px)}
+#sea-of-universes-modal-overlay .sou-mode-card{position:relative;display:flex;min-height:92px;padding:var(--space-4,16px);border:1px solid var(--border);border-radius:10px;background:var(--bg);cursor:pointer}
+#sea-of-universes-modal-overlay .sou-mode-card:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+#sea-of-universes-modal-overlay .sou-mode-card input{position:absolute;opacity:0;pointer-events:none}
+#sea-of-universes-modal-overlay .sou-mode-card span{display:flex;flex-direction:column;gap:5px}
+#sea-of-universes-modal-overlay .sou-mode-card strong{color:var(--text-primary);font-size:14px;font-weight:600}
+#sea-of-universes-modal-overlay .sou-mode-card small{color:var(--text-secondary);font-size:12px;line-height:18px}
+#sea-of-universes-modal-overlay .sou-mode-notice{display:flex;flex-direction:column;gap:6px;margin-bottom:var(--space-6,24px);padding:var(--space-4,16px);border-radius:10px;background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+#sea-of-universes-modal-overlay .sou-mode-notice strong{color:var(--text-primary);font-size:14px}
+#sea-of-universes-modal-overlay .sou-mode-notice span{color:var(--text-secondary);font-size:12px;line-height:18px}
+#sea-of-universes-modal-overlay .sou-review-box{display:flex;flex-direction:column;gap:8px;margin:var(--space-4,16px) 0 var(--space-5,20px);padding:var(--space-4,16px);border-radius:10px;background:var(--bg);color:var(--text-secondary);font-size:13px;line-height:19px}
+#sea-of-universes-modal-overlay .sou-review-box strong{color:var(--text-primary)}
+@media(max-width:600px){#sea-of-universes-modal-overlay .sou-mode-cards{grid-template-columns:1fr}}
